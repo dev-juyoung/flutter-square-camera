@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - square_camera (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - square_camera (from `.symlinks/plugins/square_camera/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  square_camera:
+    :path: ".symlinks/plugins/square_camera/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  square_camera: fe21f1fd7d1dcb3e036449ea2ffd5355018e9f68
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.0
