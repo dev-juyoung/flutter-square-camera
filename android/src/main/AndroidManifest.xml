@@ -1,3 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="dev.juyoung.square.square_camera">
+    package="dev.juyoung.square.camera">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application>
+
+        <provider
+            android:name=".SquareCameraContentProvider"
+            android:authorities="${applicationId}.provider.squarecameraprovider" />
+
+    </application>
+
 </manifest>

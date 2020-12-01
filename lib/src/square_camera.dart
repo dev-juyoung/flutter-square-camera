@@ -7,8 +7,13 @@ class SquareCamera {
     'plugins.juyoung.dev/square_camera',
   );
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  SquareCamera._();
+
+  static Future<bool> hasPermissions() async {
+    return await _channel.invokeMethod('hasPermissions');
+  }
+
+  static Future<bool> requestPermissions() async {
+    return await _channel.invokeMethod('requestPermissions');
   }
 }
