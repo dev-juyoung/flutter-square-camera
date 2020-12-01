@@ -60,27 +60,27 @@ class _CameraAppState extends State<CameraApp> {
         body: _isAvailable
             ? Container()
             : Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('사진 촬영 및 저장을 위해 권한을 획득하세요.'),
-              SizedBox(height: 8.0),
-              RaisedButton.icon(
-                icon: Icon(Icons.lock_open_rounded),
-                label: Text('권한 획득'),
-                onPressed: _requestPermissions,
+                width: double.infinity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('사진 촬영 및 저장을 위해 권한을 획득하세요.'),
+                    SizedBox(height: 8.0),
+                    RaisedButton.icon(
+                      icon: Icon(Icons.lock_open_rounded),
+                      label: Text('권한 획득'),
+                      onPressed: _requestPermissions,
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
         floatingActionButton: _isAvailable
             ? FloatingActionButton(
-          child: Icon(Icons.camera_rounded),
-          onPressed: () async {},
-        )
+                child: Icon(Icons.camera_rounded),
+                onPressed: () {},
+              )
             : null,
       ),
     );

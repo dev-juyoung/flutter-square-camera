@@ -2,7 +2,10 @@ package dev.juyoung.square.camera
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import dev.juyoung.square.camera.extensions.isRequiredPermissionAcquired
@@ -89,6 +92,7 @@ class SquareCameraPlugin : FlutterPlugin, ActivityAware, MethodCallHandler,
         when (call.method) {
             "hasPermissions" -> hasPermissions(call, result)
             "requestPermissions" -> requestPermissions(call, result)
+            "openAppSettings" -> openAppSettings(call, result)
             else -> result.notImplemented()
         }
     }
@@ -111,6 +115,24 @@ class SquareCameraPlugin : FlutterPlugin, ActivityAware, MethodCallHandler,
             permissionGroup,
             REQUIRED_PERMISSIONS_REQUEST_CODE
         )
+    }
+
+    private fun openAppSettings(call: MethodCall, result: Result) {
+        try {
+            val intent = Intent().apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.parse("package:${context.packageName}")
+                addCategory(Intent.CATEGORY_DEFAULT)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+            }
+            context.startActivity(intent)
+
+            result.success(true)
+        } catch (e: Throwable) {
+            result.success(false)
+        }
     }
 
     override fun onRequestPermissionsResult(

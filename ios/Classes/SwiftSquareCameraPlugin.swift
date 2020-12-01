@@ -18,6 +18,8 @@ public class SwiftSquareCameraPlugin: NSObject, FlutterPlugin {
             hasPermissions(call: call, result: result)
         case "requestPermissions":
             requestPermissions(call: call, result: result)
+        case "openAppSettings":
+            openAppSettings(call: call, result: result)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -41,5 +43,16 @@ public class SwiftSquareCameraPlugin: NSObject, FlutterPlugin {
             result(granted)
         }
     }
+    
+    private func openAppSettings(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let url = URL(string: UIApplication.openSettingsURLString)!
+        guard UIApplication.shared.canOpenURL(url) else {
+            result(false)
+            return;
+        }
+        
+        UIApplication.shared.open(url, options: [:]) { opened in
+            result(opened)
+        }
+    }
 }
-

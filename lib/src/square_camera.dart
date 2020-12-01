@@ -16,4 +16,8 @@ class SquareCamera {
   static Future<bool> requestPermissions() async {
     return await _channel.invokeMethod('requestPermissions');
   }
+
+  static Future<bool> openAppSettings() async {
+    return await _channel.invokeMethod('openAppSettings');
+  }
 }
