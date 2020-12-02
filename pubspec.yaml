@@ -1,8 +1,7 @@
 name: square_camera
 description: A new Flutter plugin.
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/dev-juyoung/flutter-square-camera
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -11,6 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  pedantic: ^1.9.2
+  camera: ^0.5.8+11
+  path: ^1.7.0
+  path_provider: ^1.6.24
+  image: ^2.1.19
+  image_gallery_saver: ^1.6.6
 
 dev_dependencies:
   flutter_test:

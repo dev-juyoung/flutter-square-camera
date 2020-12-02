@@ -4,7 +4,9 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="square_camera_example"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
+
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

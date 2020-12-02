@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:square_camera/square_camera.dart';
 
 void main() {
@@ -14,12 +11,13 @@ class CameraApp extends StatefulWidget {
 }
 
 class _CameraAppState extends State<CameraApp> {
+  SquareCameraController _controller;
   bool _isAvailable = false;
 
   @override
   void initState() {
     super.initState();
-
+    _controller = SquareCameraController();
     _hasPermissions();
   }
 
@@ -40,11 +38,20 @@ class _CameraAppState extends State<CameraApp> {
     final result = await SquareCamera.requestPermissions();
     print('[requestPermissions]::$result');
 
+    /// 권한 획득에 실패한 경우 앱 설정으로 이동하여 사용자가 직접 설정하도록 유도.
     if (!result) {
+      await SquareCamera.openAppSettings();
       return;
     }
 
     _hasPermissions();
+  }
+
+  void _takePicture() async {
+    final epochMillis = DateTime.now().millisecondsSinceEpoch;
+    final fileName = '${epochMillis}.jpg';
+    final result = await _controller.takePicture(fileName);
+    print('[RESULT]::$result');
   }
 
   @override
@@ -58,7 +65,7 @@ class _CameraAppState extends State<CameraApp> {
           title: Text('Square Camera Demo'),
         ),
         body: _isAvailable
-            ? Container()
+            ? SquareCameraPreview(controller: _controller)
             : Container(
                 width: double.infinity,
                 child: Column(
@@ -79,9 +86,10 @@ class _CameraAppState extends State<CameraApp> {
         floatingActionButton: _isAvailable
             ? FloatingActionButton(
                 child: Icon(Icons.camera_rounded),
-                onPressed: () {},
+                onPressed: _takePicture,
               )
             : null,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
