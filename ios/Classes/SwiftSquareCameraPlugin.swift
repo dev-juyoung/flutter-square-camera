@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import AVFoundation
+import Photos
 
 public class SwiftSquareCameraPlugin: NSObject, FlutterPlugin {
     static let TAG = "[Plugins] SquareCamera"
@@ -26,12 +27,7 @@ public class SwiftSquareCameraPlugin: NSObject, FlutterPlugin {
     }
     
     private func hasPermissions() -> Bool {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            return true
-        default:
-            return false
-        }
+        return AVCaptureDevice.isPermissionGranted(for: .video) && PHPhotoLibrary.isPermissionGranted()
     }
     
     private func hasPermissions(call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -39,9 +35,17 @@ public class SwiftSquareCameraPlugin: NSObject, FlutterPlugin {
     }
     
     private func requestPermissions(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        AVCaptureDevice.requestAccess(for: .video) { granted in
-            result(granted)
-        }
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        // 카메라 권한 획득
+        AVCaptureDevice.requestAccess(for: .video) { _ in semaphore.signal() }
+        semaphore.wait()
+        
+        // 갤러리 권한 획득
+        PHPhotoLibrary.requestAuthorization { status in semaphore.signal() }
+        semaphore.wait()
+        
+        result(AVCaptureDevice.isPermissionGranted(for: .video) && PHPhotoLibrary.isPermissionGranted())
     }
     
     private func openAppSettings(call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -53,6 +57,28 @@ public class SwiftSquareCameraPlugin: NSObject, FlutterPlugin {
         
         UIApplication.shared.open(url, options: [:]) { opened in
             result(opened)
+        }
+    }
+}
+
+extension AVCaptureDevice {
+    class func isPermissionGranted(for mediaType: AVMediaType) -> Bool {
+        switch AVCaptureDevice.authorizationStatus(for: mediaType) {
+        case .authorized:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension PHPhotoLibrary {
+    class func isPermissionGranted() -> Bool {
+        switch PHPhotoLibrary.authorizationStatus() {
+        case .authorized, .limited:
+            return true
+        default:
+            return false
         }
     }
 }
