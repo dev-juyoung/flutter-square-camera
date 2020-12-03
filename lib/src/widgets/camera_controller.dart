@@ -37,7 +37,7 @@ class SquareCameraController {
         unawaited(dispose());
       }
 
-      _camera = CameraController(camera, resolutionPreset);
+      _camera = CameraController(camera, resolutionPreset, enableAudio: false);
       await _camera.initialize();
     } on CameraException {
       rethrow;
